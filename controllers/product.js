@@ -2,6 +2,7 @@ const formidable = require("formidable");
 const _ = require("lodash");
 const fs = require("fs");
 const Product = require("../models/product");
+
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 exports.create = (req, res) => {
@@ -31,4 +32,55 @@ exports.create = (req, res) => {
     });
 };
 
+// const  Product  = require('./models/product');
 
+// It reads all the items present in database
+// exports.fetchItems = async (req, reply) => {
+//   try {
+//     const products = await Product.find();
+//     return products
+//   }
+//   catch (err) { console.log(err) }
+// }
+
+exports.list = (req, res) => {
+    let order = req.query.order ? req.query.order : "asc";
+    let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+    let limit = req.query.limit ? parseInt(req.query.limit) : 8;
+
+    Product.find()
+        // .select("-image")
+        // .populate("category")
+        // .sort([[sortBy, order]])
+        // .limit(limit)
+        .exec((err, products) => {
+            if (err) {
+                return res.status(400).json({
+                    error: "Products not found"
+                });
+            }
+            res.json(products);
+        });
+};
+
+exports.productById = (req, res, next, id) => {
+    Product.findById(id)
+        // .populate("category")   it doesn't work with this line
+        .exec((err, product) => {
+            if (err || !product) {
+                return res.status(400).json({
+                    error: "Product not found"
+                });
+            }
+            req.product = product;
+            next();
+        });
+};
+
+exports.image = (req, res, next) => {
+    if (req.product.image.data) {
+        res.set("Content-Type", req.product.image.contentType);
+        return res.send(req.product.image.data);
+    }
+    next();
+};
