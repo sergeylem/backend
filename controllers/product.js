@@ -32,13 +32,11 @@ exports.create = (req, res) => {
     });
 };
 
-// const  Product  = require('./models/product');
-
-// It reads all the items present in database
+//It reads all the items present in database
 // exports.fetchItems = async (req, reply) => {
 //   try {
 //     const products = await Product.find();
-//     return products
+// //    return products
 //   }
 //   catch (err) { console.log(err) }
 // }
@@ -49,10 +47,10 @@ exports.list = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 8;
 
     Product.find()
-        // .select("-image")
-        // .populate("category")
-        // .sort([[sortBy, order]])
-        // .limit(limit)
+         .select("-image")
+//         .populate("category")
+         .sort([[sortBy, order]])
+         .limit(limit)
         .exec((err, products) => {
             if (err) {
                 return res.status(400).json({
@@ -65,7 +63,7 @@ exports.list = (req, res) => {
 
 exports.productById = (req, res, next, id) => {
     Product.findById(id)
-        // .populate("category")   it doesn't work with this line
+//        .populate("category")   //this is line if we have category table (from Rayan) 
         .exec((err, product) => {
             if (err || !product) {
                 return res.status(400).json({

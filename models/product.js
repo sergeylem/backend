@@ -3,6 +3,12 @@ const { ObjectId } = mongoose.Schema;
 
 const productSchema = new mongoose.Schema(
     {
+        id: {
+            type: Number,
+            trim: true,
+            required: true,
+            maxlength: 32
+        },
         sku: {
             type: String,
             trim: true,

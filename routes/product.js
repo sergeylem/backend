@@ -5,7 +5,7 @@ const router = express.Router();
 // 16.02 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 //const { userById } = require("../controllers/user");
 
-const {list, productById, image} = require("../controllers/product");
+const { list, productById, image} = require("../controllers/product");
 
 // 16.02 router.post("/product/create/:userId", requireSignin, isAuth, isAdmin, create);
 
