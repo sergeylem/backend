@@ -7,7 +7,7 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 
 exports.create = (req, res) => {
     let form = new formidable.IncomingForm();
-    form.keepExtensions = true;
+    form.keepExtensions = true;                 //!!! Using body-parser with formidable
     form.parse(req, (err, fields, files) => {
         if (err) {
             return res.status(400).json({
@@ -16,15 +16,16 @@ exports.create = (req, res) => {
         }
         let product = new Product(fields);
 
-        if (files.image) {
-            product.image.data = fs.readFileSync(files.image.path);
-            product.image.contentType = files.image.type;
-        }
+        // if (files.image) {
+        //     // product.image.data = fs.readFileSync(files.image.path);
+        //     // product.image.contentType = files.image.type;
+        //     product.image = fs.readFileSync(files.image.path);
+        // }
 
         product.save((err, result) => {
             if (err) {
                 return res.status(400).json({
-                    error: errorHandler(err)
+                    error: errorHandler(err) 
                 });
             }
             res.json(result);
@@ -47,7 +48,8 @@ exports.list = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 8;
 
     Product.find()
-         .select("-image")
+//         .select("-image")     //this line hides image field in GET
+         .select()
 //         .populate("category")
          .sort([[sortBy, order]])
          .limit(limit)
@@ -75,10 +77,19 @@ exports.productById = (req, res, next, id) => {
         });
 };
 
-exports.image = (req, res, next) => {
-    if (req.product.image.data) {
-        res.set("Content-Type", req.product.image.contentType);
-        return res.send(req.product.image.data);
+exports.image = (req, res, next) => {  // HARDCODE image[0] !!! Only 1 image
+    if (req.product.image[0]) {
+//        res.set("Content-Type", req.product.image[0].contentType);
+        return res.send(req.product.image[0]);
     }
     next();
 };
+
+// exports.image2 = (req, res, next) => {  // HARDCODE image[0] !!! Only 1 image
+//     if (req.product.image[1]) {
+// //        res.set("Content-Type", req.product.image[1].contentType);
+//         return res.send(req.product.image[1]);
+//     }
+//     next();
+// };
+

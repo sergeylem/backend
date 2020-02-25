@@ -21,6 +21,21 @@ const productSchema = new mongoose.Schema(
             required: true,
             maxlength: 32
         },
+        image: [{
+            type: String,
+            required: true,
+            maxlength: 55
+        }],
+        category: [{
+            type: String,
+            required: true,
+            maxlength: 30
+        }],
+        tag: [{
+            type: String,
+            required: true,
+            maxlength: 50
+        }],
         price: {
             type: Number,
             trim: true,
@@ -48,25 +63,11 @@ const productSchema = new mongoose.Schema(
             trim: true,
             maxlength: 4
         },
-        category: {
-            type: String,
-            required: true,
-            maxlength: 30
-        },
-        tag: {
-            type: String,
-            required: true,
-            maxlength: 30
-        },
         stock: {
             type: Number,
             trim: true,
             required: true,
             maxlength: 3
-        },
-        image: {
-            data: Buffer,
-            contentType: String
         },
         shortDescription: {
             type: String,
