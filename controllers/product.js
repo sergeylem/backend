@@ -1,6 +1,6 @@
 const formidable = require("formidable");
 const _ = require("lodash");
-const fs = require("fs");
+//const fs = require("fs");
 const Product = require("../models/product");
 
 const { errorHandler } = require("../helpers/dbErrorHandler");
@@ -25,7 +25,7 @@ exports.create = (req, res) => {
         product.save((err, result) => {
             if (err) {
                 return res.status(400).json({
-                    error: errorHandler(err) 
+                    error: errorHandler("!") 
                 });
             }
             res.json(result);
@@ -45,7 +45,7 @@ exports.create = (req, res) => {
 exports.list = (req, res) => {
     let order = req.query.order ? req.query.order : "asc";
     let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
-    let limit = req.query.limit ? parseInt(req.query.limit) : 8;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 50;  //!!! LIMIT 50
 
     Product.find()
 //         .select("-image")     //this line hides image field in GET
@@ -63,8 +63,8 @@ exports.list = (req, res) => {
         });
 };
 
-exports.productById = (req, res, next, id) => {
-    Product.findById(id)
+exports.productById = (req, res, next, _id) => {
+    Product.findById(_id)
 //        .populate("category")   //this is line if we have category table (from Rayan) 
         .exec((err, product) => {
             if (err || !product) {
