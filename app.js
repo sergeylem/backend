@@ -10,8 +10,9 @@ require("dotenv").config();
 // import routes
 const authRoutes = require("./routes/auth");
 //const userRoutes = require("./routes/user");
-//const categoryRoutes = require("./routes/category");
+const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/product");
+const specificationRoutes = require("./routes/specification");
 //const braintreeRoutes = require("./routes/braintree");
 //const orderRoutes = require("./routes/order");
 
@@ -22,6 +23,7 @@ const app = express();
 mongoose
     .connect(process.env.DATABASE, {
         useNewUrlParser: true,
+        useUnifiedTopology: true, //I added 08.03.20, because last Server Discovery and Monitoring engine was deprecated
         useCreateIndex: true
     })
     .then(() => console.log("DB Connected"));
@@ -36,8 +38,9 @@ app.use(cors());
 // routes middleware
  app.use("/api", authRoutes);
 // app.use("/api", userRoutes);
-// app.use("/api", categoryRoutes);
+app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
+app.use("/api", specificationRoutes);
 //app.use("/api", braintreeRoutes);
 //app.use("/api", orderRoutes);
 

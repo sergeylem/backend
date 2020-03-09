@@ -77,6 +77,11 @@ const productSchema = new mongoose.Schema(
         fullDescription: {
             type: String,
             maxlength: 2000
+        },
+        specification: {
+            type: ObjectId,
+            ref: "Specification", 
+            required: false  //Temporary false!!!
         }
     },
     { timestamps: true }
