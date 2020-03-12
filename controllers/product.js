@@ -50,7 +50,7 @@ exports.list = (req, res) => {
     Product.find()
 //         .select("-image")     //this line hides image field in GET
          .select()
-//         .populate("category")
+         .populate("specification")
          .sort([[sortBy, order]])
          .limit(limit)
         .exec((err, products) => {
@@ -65,7 +65,7 @@ exports.list = (req, res) => {
 
 exports.productById = (req, res, next, _id) => {
     Product.findById(_id)
-//        .populate("category")   //this is line if we have category table (from Rayan) 
+        .populate("specification")   //this is line if we have category table (from Rayan) 
         .exec((err, product) => {
             if (err || !product) {
                 return res.status(400).json({
