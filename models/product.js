@@ -9,17 +9,17 @@ const productSchema = new mongoose.Schema(
         //     required: true,
         //     maxlength: 32
         // },
-        sku: {
-            type: String,
-            trim: true,
-            required: true,
-            maxlength: 7
-        },
         name: {
             type: String,
             trim: true,
             required: true,
             maxlength: 45
+        },
+        sku: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 7
         },
         image: [{
             type: String,
@@ -44,7 +44,7 @@ const productSchema = new mongoose.Schema(
         },
         discount: {
             type: Number,
-            default: 0, 
+            default: 0,
             trim: true,
             required: true,
             maxlength: 32
@@ -80,7 +80,7 @@ const productSchema = new mongoose.Schema(
         },
         specification: {
             type: ObjectId,
-            ref: "Specification", 
+            ref: "Specification",
             required: false  //Temporary false!!!
         }
     },

@@ -7,7 +7,6 @@ const { userById } = require("../controllers/user");
 
 const { 
     list
-    // , 
     // productById, 
     // image
 } 

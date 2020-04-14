@@ -12,3 +12,14 @@ exports.create = (req, res) => {
         res.json({ data });
     });
 };
+
+exports.list = (req, res) => {
+    Category.find().exec((err, data) => {
+        if (err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            });
+        }
+        res.json(data);
+    });
+};
