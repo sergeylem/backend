@@ -14,6 +14,26 @@ exports.create = (req, res) => {
                 error: "Image could not be uploaded"
             });
         }
+        
+        // Check! May be add other fields?
+        const {
+            name,
+            price,
+            category,
+            specification
+        } = fields;
+
+        if (
+            !name ||
+            !price ||
+            !category ||
+            !specification
+        ) {
+            return res.status(400).json({
+                error: "All fields are required"
+            });
+        }
+
         let product = new Product(fields);
 
         // if (files.image) {
@@ -25,7 +45,7 @@ exports.create = (req, res) => {
         product.save((err, result) => {
             if (err) {
                 return res.status(400).json({
-                    error: errorHandler("!") 
+                    error: errorHandler(err) 
                 });
             }
             res.json(result);
