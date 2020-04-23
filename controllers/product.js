@@ -5,7 +5,15 @@ const Product = require("../models/product");
 
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
+//const { validationResult } = require('express-validator');
+
 exports.create = (req, res) => {
+
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //     return res.status(422).json({ errors: errors.array() });
+    // }
+
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;                 //!!! Using body-parser with formidable
     form.parse(req, (err, fields, files) => {
@@ -14,25 +22,23 @@ exports.create = (req, res) => {
                 error: "Image could not be uploaded"
             });
         }
-        
-        // Check! May be add other fields?
-        const {
-            name,
-            price,
-            category,
-            specification
-        } = fields;
 
-        if (
-            !name ||
-            !price ||
-            !category ||
-            !specification
-        ) {
-            return res.status(400).json({
-                error: "All fields are required"
-            });
-        }
+        // Check! May be add other fields?
+        // const {
+        //     name,
+        //     price,
+        //     category
+        // } = fields;
+
+        // if (
+        //     !name ||
+        //     !price ||
+        //     !category
+        // ) {
+        //     return res.status(400).json({
+        //         error: "All fields are required !"
+        //     });
+        // }
 
         let product = new Product(fields);
 
@@ -45,7 +51,7 @@ exports.create = (req, res) => {
         product.save((err, result) => {
             if (err) {
                 return res.status(400).json({
-                    error: errorHandler(err) 
+                    error: errorHandler(err)
                 });
             }
             res.json(result);
@@ -68,11 +74,11 @@ exports.list = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 50;  //!!! LIMIT 50
 
     Product.find()
-//         .select("-image")     //this line hides image field in GET
-         .select()
-         .populate("specification")
-         .sort([[sortBy, order]])
-         .limit(limit)
+        //         .select("-image")     //this line hides image field in GET
+        .select()
+        .populate("specification")
+        .sort([[sortBy, order]])
+        .limit(limit)
         .exec((err, products) => {
             if (err) {
                 return res.status(400).json({
@@ -99,7 +105,7 @@ exports.productById = (req, res, next, _id) => {
 
 exports.image = (req, res, next) => {  // HARDCODE image[0] !!! Only 1 image
     if (req.product.image[0]) {
-//        res.set("Content-Type", req.product.image[0].contentType);
+        //        res.set("Content-Type", req.product.image[0].contentType);
         return res.send(req.product.image[0]);
     }
     next();

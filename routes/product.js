@@ -5,14 +5,28 @@ const { create } = require("../controllers/product");
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
 
-const { 
+const { check } = require('express-validator');
+
+const {
     list
     // productById, 
     // image
-} 
+}
     = require("../controllers/product");
 
-router.post("/product/create/:userId", requireSignin, isAuth, isAdmin, create);
+//const { createProductValidator } = require("../validator");
+
+router.post("/product/create/:userId",
+    //    createProductValidator,
+    [
+        check('name')
+            //            .not()
+            .isLength({ min: 4 })
+            .withMessage('Name is min 4 required')],
+    requireSignin,
+    isAuth,
+    isAdmin,
+    create);
 
 router.get("/products", list);
 
