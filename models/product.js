@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
+//const { ObjectId } = mongoose.Schema;
 
 const productSchema = new mongoose.Schema(
     {
@@ -23,17 +23,17 @@ const productSchema = new mongoose.Schema(
         },
         image: [{
             type: String,
-            required: true,
+//            required: true,
             maxlength: 55
         }],
         category: [{
             type: String,
-            required: true,
+//            required: true,
             maxlength: 30
         }],
         tag: [{
             type: String,
-            required: true,
+ //           required: true,
             maxlength: 50
         }],
         price: {
@@ -50,7 +50,6 @@ const productSchema = new mongoose.Schema(
             maxlength: 32
         },
         new: {
-            required: false,
             type: Boolean
         },
         rating: {

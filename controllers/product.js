@@ -4,24 +4,22 @@ const _ = require("lodash");
 const Product = require("../models/product");
 
 const { errorHandler } = require("../helpers/dbErrorHandler");
-
-//const { validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
 
 exports.create = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
 
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //     return res.status(422).json({ errors: errors.array() });
-    // }
-
-    let form = new formidable.IncomingForm();
-    form.keepExtensions = true;                 //!!! Using body-parser with formidable
-    form.parse(req, (err, fields, files) => {
-        if (err) {
-            return res.status(400).json({
-                error: "Image could not be uploaded"
-            });
-        }
+    // let form = new formidable.IncomingForm();
+    // form.keepExtensions = true;                 //!!! Using body-parser with formidable
+    // form.parse(req, (err, fields, files) => {
+    //     if (err) {
+    //         return res.status(400).json({
+    //             error: "Image could not be uploaded"
+    //         });
+    //     }
 
         // Check! May be add other fields?
         // const {
@@ -40,7 +38,8 @@ exports.create = (req, res) => {
         //     });
         // }
 
-        let product = new Product(fields);
+//        let product = new Product(fields);
+        let product = new Product(req.body);
 
         // if (files.image) {
         //     // product.image.data = fs.readFileSync(files.image.path);
@@ -56,7 +55,7 @@ exports.create = (req, res) => {
             }
             res.json(result);
         });
-    });
+//    });
 };
 
 //It reads all the items present in database

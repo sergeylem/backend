@@ -1,18 +1,3 @@
-// exports.createProductValidator = (req, res, next) => {
-//     req.check("sku")
-//         .not()
-//         .isEmpty()
-//         .withMessage("SKU is required");
-
-//     const errors = req.validationErrors();
-//     if (errors) {
-//         const firstError = errors.map(error => error.msg)[0];
-//         return res.status(400).json({ error: firstError });
-//     }
-//     next();
-// };
-
-
 // exports.userSignupValidator = (req, res, next) => {
 //     req.check("name", "Name is required").notEmpty();
 //     req.check("email", "Email must be between 3 to 32 characters")
@@ -35,3 +20,4 @@
 //     }
 //     next();
 // };
+

@@ -1,28 +1,36 @@
 const express = require("express");
 const router = express.Router();
 
+const { check } = require('express-validator');
+
 const { create } = require("../controllers/product");
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
-
-const { check } = require('express-validator');
 
 const {
     list
     // productById, 
     // image
-}
-    = require("../controllers/product");
+} = require("../controllers/product");
 
-//const { createProductValidator } = require("../validator");
-
-router.post("/product/create/:userId",
-    //    createProductValidator,
-    [
-        check('name')
-            //            .not()
-            .isLength({ min: 4 })
-            .withMessage('Name is min 4 required')],
+router.post("/product/create/:userId", [
+    check('name')
+        .not()
+        .isEmpty()
+        .withMessage('Name is required'),
+    check('sku')
+        .not()
+        .isEmpty()
+        .withMessage('SKU Code is required')
+        .isLength({ max: 7 })
+        .withMessage('SKU Code of max 7 symbols is required'),
+    check('price')
+        .isNumeric()
+        .withMessage('Price must contain numbers'),
+    check('discount')
+        .isNumeric()
+        .withMessage('Discount must contain numbers')
+],
     requireSignin,
     isAuth,
     isAdmin,
