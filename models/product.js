@@ -60,6 +60,7 @@ const productSchema = new mongoose.Schema(
         saleCount: {
             type: Number,
             trim: true,
+            required: true,
             maxlength: 4
         },
         stock: {
