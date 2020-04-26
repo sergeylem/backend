@@ -3,9 +3,16 @@ const _ = require("lodash");
 //const fs = require("fs");
 const Product = require("../models/product");
 const { errorHandler } = require("../helpers/dbErrorHandler");
-const errorFields  = require("../helpers/dbErrorProductHandler");
+//!!! const errorFields  = require("../helpers/dbErrorProductHandler");
+
+const { validationResult } = require('express-validator');
 
 exports.create = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;                 //!!! Using body-parser with formidable
     form.parse(req, (err, fields, files) => {
@@ -15,12 +22,12 @@ exports.create = (req, res) => {
             });
         }
 
-        let error = errorFields.dbErrorProductHandler(fields);
-        if (error) {
-            return res.status(400).json({
-                error: error
-            });
-        }
+        //!!! let error = errorFields.dbErrorProductHandler(fields);
+        // if (error) {
+        //     return res.status(400).json({
+        //         error: error
+        //     });
+        // }
 
         let product = new Product(fields);
         //        let product = new Product(req.body);
