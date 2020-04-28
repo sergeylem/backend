@@ -1,9 +1,9 @@
-const formidable = require("formidable");
+//const formidable = require("formidable");
 const _ = require("lodash");
 //const fs = require("fs");
 const Product = require("../models/product");
 const { errorHandler } = require("../helpers/dbErrorHandler");
-//!!! const errorFields  = require("../helpers/dbErrorProductHandler");
+//const errorFields  = require("../helpers/dbErrorProductHandler");
 
 const { validationResult } = require('express-validator');
 
@@ -13,27 +13,27 @@ exports.create = (req, res) => {
         return res.status(422).json({ errors: errors.array() });
     }
 
-    let form = new formidable.IncomingForm();
-    form.keepExtensions = true;                 //!!! Using body-parser with formidable
-    form.parse(req, (err, fields, files) => {
-        if (err) {
-            return res.status(400).json({
-                error: "Image could not be uploaded"
-            });
-        }
+    // let form = new formidable.IncomingForm(); // formidable use for parsing form data, especially file uploads.
+    // form.keepExtensions = true;                 //!!! Using body-parser with formidable
+    // form.parse(req, (err, fields, files) => {
+    //     if (err) {
+    //         return res.status(400).json({
+    //             error: "Image could not be uploaded"
+    //         });
+    //     }
 
-        //!!! let error = errorFields.dbErrorProductHandler(fields);
+        // let error = errorFields.dbErrorProductHandler(fields);
         // if (error) {
         //     return res.status(400).json({
         //         error: error
         //     });
         // }
 
-        let product = new Product(fields);
-        //        let product = new Product(req.body);
+        // let product = new Product(fields);
+        let product = new Product(req.body);
 
         // if (files.image) {
-        //     // product.image.data = fs.readFileSync(files.image.path);
+        //     // pro   duct.image.data = fs.readFileSync(files.image.path);
         //     // product.image.contentType = files.image.type;
         //     product.image = fs.readFileSync(files.image.path);
         // }
@@ -46,7 +46,7 @@ exports.create = (req, res) => {
             }
             res.json(result);
         });
-    });
+//    });
 };
 
 //It reads all the items present in database

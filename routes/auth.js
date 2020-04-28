@@ -11,22 +11,18 @@ const {
 //const { userSignupValidator } = require("../validator");
 
 router.post("/signup", [
-    check('name')
+    check('name', 'Name is required!')
         .not()
-        .isEmpty()
-        .withMessage('Name is required'),
-    check('surname')
+        .isEmpty(),
+    check('surname', 'Surname is required!')
         .not()
-        .isEmpty()
-        .withMessage('Surname is required'),
-    check('email')
-        .isEmail()
-        .withMessage('Email is required'),
-    check('password')
+        .isEmpty(),
+    check('email', 'Email is required!')
+        .isEmail(),
+    check('password', 'Password is min 6 required!')
         .isLength({ min: 6 })
-        .withMessage('Password is min 6 required')
         .matches(/\d/)
-        .withMessage("Password must contain a number")], signup);
+        .withMessage("Password must contain a number!")], signup);
 router.post("/signin", signin);
 router.get("/signout", signout);
 
