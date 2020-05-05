@@ -15,16 +15,17 @@ const productSchema = new mongoose.Schema(
             required: true,
             maxlength: 45
         },
-        sku: {
+        sku: { //must be uniq !!!!! and must be checked for uniqueness
             type: String,
+            unique: true, 
             trim: true,
             required: true,
             maxlength: 7
         },
         image: [{
             type: String,
-//            required: true,
-            maxlength: 55
+            required: true,
+            maxlength: 70
         }],
         category: [{
             type: String,
@@ -49,7 +50,7 @@ const productSchema = new mongoose.Schema(
             required: true,
             maxlength: 32
         },
-        new: {
+        isnew: {
             type: Boolean
         },
         rating: {
