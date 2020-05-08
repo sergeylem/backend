@@ -6,7 +6,9 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 
 //const { validationResult } = require('express-validator');
 
-exports.create =  (req, res) => {
+exports.create = (req, res) => {
+    //   exports.create = async (req, res, next) => {
+
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
     form.parse(req, (err, fields, files) => {
@@ -15,21 +17,52 @@ exports.create =  (req, res) => {
                 error: "Image could not be uploaded"
             });
         }
+
+        // const errors = validationResult(req);
+        // if (!errors.isEmpty()) {
+        //     return res.status(422).json({ errors: errors.array() });
+        // }
+
+        // let product = new Product(fields);
+        // let product = new Product(req.body);
+
+        // const { name, sku, category, tag, price, discount, isnew, rating, saleCount, stock, shortDescription, fullDescription, 
+        //     model, performance, storage, camera, battery, display, ram, os } = req.body;
+
+        // let existingProduct;
+        // try {
+        //     existingProduct = await Product.findOne({ sku: sku });
+        // } catch (err) {
+        //   const error = 'The connection error, please try again later.';        
+        //   return next(error);
+        // }
+
+        // if (existingProduct) {
+        //     const error = 'SKU code exists already, please choose another.';
+        //     return next(error);
+        //   }
+
+        //   const createdProduct = new Product({
+        //     name, sku,
+        //     // image: req.file.path,
+        //     category, tag, price, discount, isnew, rating, saleCount, stock, shortDescription, fullDescription, 
+        //     model, performance, storage, camera, battery, display, ram, os
+        //   });
+
         let product = new Product(fields);
 
-        console.log("files.image.path " + files.image.path);
-        console.log("files.image " + files.image);
-        
         if (files.image) {
-            // console.log("FILES PHOTO: ", files.photo);
+            console.log("FILES Image: ", files.image);
             if (files.image.size > 1000000) {
                 return res.status(400).json({
                     error: "Image should be less than 1mb in size"
                 });
             }
-            product.image = files.image.path;
-//            product.image.contentType = files.image.type;
+            product.image.data = fs.readFileSync(files.image.path);
+            console.log("FILES path: ", files.image.path);
+            product.image.contentType = files.image.type;
         }
+
         product.save((err, result) => {
             if (err) {
                 return res.status(400).json({
@@ -38,50 +71,16 @@ exports.create =  (req, res) => {
             }
             res.json(result);
         });
+
     });
-
-
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //     return res.status(422).json({ errors: errors.array() });
-    // }
-
-    // let product = new Product(fields);
-    // let product = new Product(req.body);
-
-    //!!! const { name, sku, category, tag, price, discount, isnew, rating, saleCount, stock, shortDescription, fullDescription,
-    //!!!     model, performance, storage, camera, battery, display, ram, os } = req.body;
-
-    // let existingProduct;
-    // try {
-    //     existingProduct = await Product.findOne({ sku: sku });
-    // } catch (err) {
-    //     const error = 'The connection error, please try again later.';
+    //   try {
+    //     await createdProduct.save();
+    //   } catch (err) {
+    //     const error = 'Signing up failed, please try again later.';
     //     return next(error);
-    // }
+    //   }
 
-    // if (existingProduct) {
-    //     const error = 'SKU code exists already, please choose another.';
-    //     return next(error);
-    // }
-
-/*    const createdProduct = new Product({
-        name, sku,
-        image: req.file.path,
-        category, tag, price, discount, isnew, rating, saleCount, stock, shortDescription, fullDescription,
-        model, performance, storage, camera, battery, display, ram, os
-    });
-
-    try {
-        await createdProduct.save();
-    } catch (err) {
-        const error = 'Create product is failed, please try again later.';
-        return next(error);
-    }
-
-    res.status(201).json({ product: createdProduct.toObject({ getters: true }) });
-*/
-
+    //   res.status(201).json({ product: createdProduct.toObject({ getters: true }) });
 
 };
 

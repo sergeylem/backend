@@ -22,10 +22,14 @@ const productSchema = new mongoose.Schema(
             required: true,
             maxlength: 7
         },
+        // image: {
+        //     data: Buffer,
+        //     contentType: String
+        // },
         image: [{
             type: String,
             required: true,
-            maxlength: 70
+            maxlength: 250
         }],
         category: [{
             type: String,
