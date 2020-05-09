@@ -1,77 +1,23 @@
-const formidable = require("formidable");
 const _ = require("lodash");
-const fs = require("fs");
 const Product = require("../models/product");
 const { errorHandler } = require("../helpers/dbErrorHandler");
+const { validationResult } = require('express-validator');
 
-//const { validationResult } = require('express-validator');
+ exports.create =  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
 
-exports.create =  (req, res) => {
-    let form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    form.parse(req, (err, fields, files) => {
-        if (err) {
-            return res.status(400).json({
-                error: "Image could not be uploaded"
-            });
-        }
-        let product = new Product(fields);
+    const { name, sku, category, tag, price, discount, isnew, rating, saleCount, stock, shortDescription, fullDescription,
+    model, performance, storage, camera, battery, display, ram, os } = req.body;
 
-        console.log("files.image.path " + files.image.path);
-        console.log("files.image " + files.image);
-        
-        if (files.image) {
-            // console.log("FILES PHOTO: ", files.photo);
-            if (files.image.size > 1000000) {
-                return res.status(400).json({
-                    error: "Image should be less than 1mb in size"
-                });
-            }
-            product.image = files.image.path;
-//            product.image.contentType = files.image.type;
-        }
-        product.save((err, result) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(err)
-                });
-            }
-            res.json(result);
-        });
-    });
-
-
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //     return res.status(422).json({ errors: errors.array() });
-    // }
-
-    // let product = new Product(fields);
-    // let product = new Product(req.body);
-
-    //!!! const { name, sku, category, tag, price, discount, isnew, rating, saleCount, stock, shortDescription, fullDescription,
-    //!!!     model, performance, storage, camera, battery, display, ram, os } = req.body;
-
-    // let existingProduct;
-    // try {
-    //     existingProduct = await Product.findOne({ sku: sku });
-    // } catch (err) {
-    //     const error = 'The connection error, please try again later.';
-    //     return next(error);
-    // }
-
-    // if (existingProduct) {
-    //     const error = 'SKU code exists already, please choose another.';
-    //     return next(error);
-    // }
-
-/*    const createdProduct = new Product({
-        name, sku,
+    const createdProduct = new Product({
         image: req.file.path,
-        category, tag, price, discount, isnew, rating, saleCount, stock, shortDescription, fullDescription,
+        name, sku, category, tag, price, discount, isnew, rating, saleCount, stock, shortDescription, fullDescription,
         model, performance, storage, camera, battery, display, ram, os
     });
-
+    
     try {
         await createdProduct.save();
     } catch (err) {
@@ -80,9 +26,6 @@ exports.create =  (req, res) => {
     }
 
     res.status(201).json({ product: createdProduct.toObject({ getters: true }) });
-*/
-
-
 };
 
 //It reads all the items present in database
@@ -136,12 +79,3 @@ exports.image = (req, res, next) => {  // HARDCODE image[0] !!! Only 1 image
     }
     next();
 };
-
-// exports.image2 = (req, res, next) => {  // HARDCODE image[0] !!! Only 1 image
-//     if (req.product.image[1]) {
-// //        res.set("Content-Type", req.product.image[1].contentType);
-//         return res.send(req.product.image[1]);
-//     }
-//     next();
-// };
-

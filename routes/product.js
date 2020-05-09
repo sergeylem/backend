@@ -5,7 +5,7 @@ const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
 
 const fileUpload = require("../helpers/fileUpload");
-//const { check } = require('express-validator');
+const { check } = require('express-validator');
 
 const {
     list
@@ -14,24 +14,24 @@ const {
 } = require("../controllers/product");
 
 router.post("/product/create/:userId",
-// [
-    //     check('name', 'Name is required!').not().isEmpty(),
-    //     check('sku', 'SKU code is required!').not().isEmpty(),
-    //     check('category', 'Category is required!').not().isEmpty(),
-    //     check('tag', 'Tag is required!').not().isEmpty(),
-    //     // check('image', 'Image is required!').not().isEmpty(),
-    //     check('price', 'Price is required!').not().isEmpty(),
-    //     check('discount', 'Discount is required!').not().isEmpty(),
-    //     check('saleCount', 'SaleCount is required!').not().isEmpty(),
-    //     check('stock', 'Stock is required!').not().isEmpty(),
-    //     check('shortDescription', 'ShortDescription is required!').not().isEmpty(),
-    //     check('model', 'Model is required!').not().isEmpty(),
-    //     check('performance', 'Performance is required!').not().isEmpty()
-    // ],
+    fileUpload.single('image'),
+    [
+        check('name', 'Name is required!').not().isEmpty(),
+        check('sku', 'SKU code is required!').not().isEmpty(),
+        check('category', 'Category is required!').not().isEmpty(),
+        check('tag', 'Tag is required!').not().isEmpty(),
+        //check('image', 'Image is required!').not().isEmpty(),
+        check('price', 'Price is required!').not().isEmpty(),
+        check('discount', 'Discount is required!').not().isEmpty(),
+        check('saleCount', 'SaleCount is required!').not().isEmpty(),
+        check('stock', 'Stock is required!').not().isEmpty(),
+        check('shortDescription', 'ShortDescription is required!').not().isEmpty(),
+        check('model', 'Model is required!').not().isEmpty(),
+        check('performance', 'Performance is required!').not().isEmpty()
+    ],
     requireSignin,
     isAuth,
     isAdmin,
-    fileUpload.single("image"),
     create
 );
 

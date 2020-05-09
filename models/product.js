@@ -29,16 +29,16 @@ const productSchema = new mongoose.Schema(
         image: [{
             type: String,
             required: true,
-            maxlength: 250
+            maxlength: 200  //Is it many? 200
         }],
         category: [{
             type: String,
-//            required: true,
+            required: true,
             maxlength: 30
         }],
         tag: [{
             type: String,
- //           required: true,
+            required: true,
             maxlength: 50
         }],
         price: {
