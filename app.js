@@ -24,34 +24,32 @@ const app = express();
 
 // db
 mongoose
-    .connect(process.env.DATABASE, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true, //I added 08.03.20, because last Server Discovery and Monitoring engine was deprecated
-        useCreateIndex: true
-    })
-    .then(() => console.log("DB Connected"));
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true, //I added 08.03.20, because last Server Discovery and Monitoring engine was deprecated
+    useCreateIndex: true
+  })
+  .then(() => console.log("DB Connected"));
 
 // middlewares
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cookieParser());
-//app.use(expressValidator());
 app.use(express.json());
 
-app.use(cors());
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+app.use(cors());
 
-  next();
-});
-
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//   );
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+//   next();
+// });
 
 // routes middleware
 app.use("/api", authRoutes);
@@ -69,20 +67,20 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-    if (req.file) {
-      fs.unlink(req.file.path, err => {
-        console.log(err);
-      });
-    }
-    if (res.headerSent) {
-      return next(error);
-    }
-    res.status(error.code || 500);
-    res.json({ message: error.message || 'An unknown error occurred!' });
-  });
-  
+  if (req.file) {
+    fs.unlink(req.file.path, err => {
+      console.log(err);
+    });
+  }
+  if (res.headerSent) {
+    return next(error);
+  }
+  res.status(error.code || 500);
+  res.json({ message: error.message || 'An unknown error occurred!' });
+});
+
 const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });

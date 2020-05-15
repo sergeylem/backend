@@ -14,6 +14,9 @@ const {
 } = require("../controllers/product");
 
 router.post("/product/create/:userId",
+    requireSignin,
+    isAuth,
+    isAdmin,
     fileUpload.single('image'),
     [
         check('name', 'Name is required!').not().isEmpty(),
@@ -29,9 +32,6 @@ router.post("/product/create/:userId",
         check('model', 'Model is required!').not().isEmpty(),
         check('performance', 'Performance is required!').not().isEmpty()
     ],
-    requireSignin,
-    isAuth,
-    isAdmin,
     create
 );
 
