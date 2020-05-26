@@ -60,7 +60,9 @@ exports.list = (req, res) => {
 
 exports.productById = (req, res, next, _id) => {
     Product.findById(_id)
-        .populate("specification")   //this is line if we have category table (from Rayan) 
+//        .populate("specification")   //this is line if we have specification table 
+        .populate("category")   
+        .populate("tag")   
         .exec((err, product) => {
             if (err || !product) {
                 return res.status(400).json({
@@ -78,4 +80,23 @@ exports.image = (req, res, next) => {  // HARDCODE image[0] !!! Only 1 image
         return res.send(req.product.image[0]);
     }
     next();
+};
+
+exports.remove = (req, res) => {
+  let product = req.product;
+  product.remove((err, deletedProduct) => {
+      if (err) {
+          return res.status(400).json({
+              error: errorHandler(err)
+          });
+      }
+      res.json({
+          message: "Product deleted successfully"
+      });
+  });
+};
+
+exports.read = (req, res) => {
+  //req.product.photo = undefined;
+  return res.json(req.product);
 };

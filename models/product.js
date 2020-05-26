@@ -60,6 +60,7 @@ const productSchema = new mongoose.Schema(
         rating: {
             type: Number,
             trim: true,
+            required: true,
             maxlength: 1
         },
         saleCount: {
@@ -93,12 +94,12 @@ const productSchema = new mongoose.Schema(
         performance: {
             type: String,
             trim: true,
-            maxlength: 150  // Apple A13 Bionic
+            maxlength: 100  // Apple A13 Bionic
         },
         storage: {
             type: String,
             trim: true,
-            maxlength: 3 // 64 + "GB"
+            maxlength: 4 // 1024 + "GB"
         },
         camera: {
             type: String,
@@ -118,7 +119,7 @@ const productSchema = new mongoose.Schema(
         ram: {
             type: String,
             trim: true,
-            maxlength: 5  // 4 + "GB"
+            maxlength: 4  // 256 + "GB"
         },
         os: {
             type: String,
