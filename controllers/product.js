@@ -46,7 +46,8 @@ exports.list = (req, res) => {
     //         .select("-image")     //this line hides image field in GET
     .select()
     //.populate("specification")
-    //.populate("category")
+    .populate("category")
+    .populate("tag")
     .sort([[sortBy, order]])
     .limit(limit)
     .exec((err, products) => {
