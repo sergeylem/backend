@@ -15,7 +15,6 @@ const authRoutes = require("./routes/auth");
 const categoryRoutes = require("./routes/category");
 const tagRoutes = require("./routes/tag");
 const productRoutes = require("./routes/product");
-const specificationRoutes = require("./routes/specification");
 //const braintreeRoutes = require("./routes/braintree");
 //const orderRoutes = require("./routes/order");
 
@@ -57,7 +56,6 @@ app.use("/api", authRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", tagRoutes);
 app.use("/api", productRoutes);
-app.use("/api", specificationRoutes);
 //app.use("/api", braintreeRoutes);
 //app.use("/api", orderRoutes);
 

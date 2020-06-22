@@ -45,7 +45,6 @@ exports.list = (req, res) => {
   Product.find()
     //         .select("-image")     //this line hides image field in GET
     .select()
-    //.populate("specification")
     .populate("category")
     .populate("tag")
     .sort([[sortBy, order]])
@@ -62,7 +61,6 @@ exports.list = (req, res) => {
 
 exports.productById = (req, res, next, _id) => {
   Product.findById(_id)
-    //        .populate("specification")   //this is line if we have specification table with type: ObjectId, 
      //.populate("category")   
     // .populate("tag")   
     .exec((err, product) => {

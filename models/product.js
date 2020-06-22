@@ -31,21 +31,11 @@ const productSchema = new mongoose.Schema(
       //required: true,
       maxlength: 80  //Is it enough? 200
     }],
-    // category: [{
-    //     type: String,
-    //     required: true,
-    //     maxlength: 30
-    // }],
     category: {
       type: ObjectId,
       ref: "Category",
       required: true  
     },
-    // tag: [{
-    //   type: String,
-    //   required: true,
-    //   maxlength: 50
-    // }],
     tag: {
       type: ObjectId,
       ref: "Tag",
@@ -136,12 +126,6 @@ const productSchema = new mongoose.Schema(
       trim: true,
       maxlength: 12  // Android 
     }
-
-    // specification: {
-    //     type: ObjectId,
-    //     ref: "Specification",
-    //     required: false  //Temporary false!!!
-    // }
   },
   { timestamps: true }
 );
