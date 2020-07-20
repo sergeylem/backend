@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
+// const cors = require("cors");
 
 require("dotenv").config();
 // import routes
@@ -21,34 +21,27 @@ const productRoutes = require("./routes/product");
 // app
 const app = express();
 
-// db
-mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true, //I added 08.03.20, because last Server Discovery and Monitoring engine was deprecated
-    useCreateIndex: true
-  })
-  .then(() => console.log("DB Connected"));
-
 // middlewares
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json());
 
-app.use('/uploads/images', express.static(path.join('uploads', 'images')));
+// app.use(cors());
 
-app.use(cors());
+app.use('/uploads/images', express.static(path.join('uploads', 'images'))); 
 
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader(
-//     'Access-Control-Allow-Headers',
-//     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-//   );
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-//   next();
-// });
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+  next();
+});
+
+//20.07 app.use(express.static(path.join('public'))); 
 
 // routes middleware
 app.use("/api", authRoutes);
@@ -58,6 +51,10 @@ app.use("/api", tagRoutes);
 app.use("/api", productRoutes);
 //app.use("/api", braintreeRoutes);
 //app.use("/api", orderRoutes);
+
+//20.07 app.use((req, res, next) => {
+//   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+// });
 
 app.use((req, res, next) => {
   const error = 'Could not find this route.';
@@ -77,8 +74,23 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || 'An unknown error occurred!' });
 });
 
-const port = process.env.PORT || 8000;
+//const port = process.env.PORT || 8000;
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// db
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true, //I added 08.03.20, because last Server Discovery and Monitoring engine was deprecated
+    useCreateIndex: true
+  })
+  .then(() => {
+    app.listen(8000);
+  })
+  .then(() => console.log("DB Connected"))
+  .catch(err => {
+    console.log(err);
+  })
+
+// app.listen(port, () => {
+//   console.log(`Server is running on port ${port}`);
+// });
