@@ -30,18 +30,18 @@ app.use(express.json());
 // app.use(cors());
 
 app.use('/uploads/images', express.static(path.join('uploads', 'images'))); 
+app.use(express.static(path.join('public'))); 
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//   );
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+//   next();
+// });
 
-//20.07 app.use(express.static(path.join('public'))); 
 
 // routes middleware
 app.use("/api", authRoutes);
@@ -52,14 +52,14 @@ app.use("/api", productRoutes);
 //app.use("/api", braintreeRoutes);
 //app.use("/api", orderRoutes);
 
-//20.07 app.use((req, res, next) => {
-//   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-// });
-
 app.use((req, res, next) => {
-  const error = 'Could not find this route.';
-  throw error;
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
+
+// app.use((req, res, next) => {
+//   const error = 'Could not find this route.';
+//   throw error;
+// });
 
 app.use((error, req, res, next) => {
   if (req.file) {
