@@ -7,7 +7,7 @@ const { userById } = require("../controllers/user");
 const fileUpload = require("../helpers/fileUpload");
 const { check } = require('express-validator');
 
-//const { image } = require("../controllers/product");
+const { image } = require("../controllers/product"); //!!! 23.07
 
 router.post("/product/create/:userId",
     requireSignin,
@@ -31,7 +31,7 @@ router.post("/product/create/:userId",
 );
 
 router.get("/products", list);
-//router.get("/product/image/:productId", image);
+router.get("/product/image/:productId", image); //!!! 23.07
 
 router.delete(
   "/product/:productId/:userId",
